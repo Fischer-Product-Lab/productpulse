@@ -13,7 +13,7 @@ export function BrandMark() {
         <span className="font-heading text-lg font-semibold tracking-tight">
           Product<span className="text-gold-gradient">Pulse</span>
         </span>
-        <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        <span className="whitespace-nowrap text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
           Fischer Product Lab
         </span>
       </span>
