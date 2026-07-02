@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type { Initiative } from "@/data/productpulse";
 import type { ImpactResult } from "@/lib/impact";
 import { ImpactStatusBadge } from "@/components/impact-status-badge";
-import { Badge } from "@/components/ui/badge";
+import { InitiativeTypeBadge } from "@/components/initiative-type-badge";
 import { cn } from "@/lib/utils";
 
 const usd = new Intl.NumberFormat("en-US", {
@@ -26,18 +26,6 @@ function formatLaunchDate(iso: string) {
 
 function signed(value: number, suffix: string) {
   return `${value > 0 ? "+" : ""}${value}${suffix}`;
-}
-
-function TypeBadge({ type }: { type: Initiative["type"] }) {
-  return type === "AI" ? (
-    <Badge variant="outline" className="border-gold/40 bg-gold/10 text-gold-light">
-      AI
-    </Badge>
-  ) : (
-    <Badge variant="outline" className="text-muted-foreground">
-      Standard
-    </Badge>
-  );
 }
 
 function AdoptionBar({ before, after }: { before: number; after: number }) {
@@ -98,7 +86,7 @@ export function InitiativeCard({
               <h2 className="font-heading text-base font-semibold tracking-tight md:text-lg">
                 {initiative.name}
               </h2>
-              <TypeBadge type={initiative.type} />
+              <InitiativeTypeBadge type={initiative.type} />
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               {initiative.owner} · launched {formatLaunchDate(initiative.launchDate)}
