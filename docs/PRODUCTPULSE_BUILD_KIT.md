@@ -138,9 +138,6 @@ Claude Code already has `CLAUDE.md` and this file in context. Reference them by 
 **Prompt H — About + docs + security**
 > Build `/about` following the pattern in the sibling repos: product context, architecture summary, security posture, and links back to AgentOps, TrustDesk, and VulnBoard. Create `README.md`, `SECURITY.md`, and `docs/threat-model.md` (STRIDE table, read-only demo). Enable TypeScript strict mode if not already on.
 
-**Prompt I — Deploy**
-> Walk me through deploying to Vercel from GitHub. Name the Vercel project `productpulse-fpl` from the start so the live URL is `productpulse-fpl.vercel.app` — skip the rename dance. Confirm no environment variables are needed for V1.
-
 ## 9. Definition of done
 
 In three minutes you can open the live URL and show: the executive brief → the initiative registry → point at the AI Jira Triage Assistant (Strong Impact) and explain why → point at the gamification badges (Underperforming) and explain that too → adoption funnel → engagement stickiness → revenue NRR → the about page's security posture. If you can narrate all of that, V1 is done.
