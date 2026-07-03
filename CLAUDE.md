@@ -44,9 +44,9 @@ Next.js App Router, TypeScript strict mode, Tailwind CSS, shadcn/ui, Recharts, d
 
 
 
-## Scope boundary for V1
+## Scope boundary
 
-Six routes only — see the build kit for the full spec: executive brief, adoption, engagement, revenue, initiatives (the differentiator), about. A retention/cohort view is V1.1 — do not build it unless explicitly asked. Resist adding screens not listed in the build kit.
+V1 shipped six routes — executive brief, adoption, engagement, revenue, initiatives (the differentiator), about — and V1.1 added `/retention` (cohort curves + churn-risk segmentation, explicitly requested July 2026) plus a glossary on the About page. Resist adding further screens unless explicitly asked; extend the existing pattern (typed data in `src/data/`, deterministic engines in `src/lib/`, tests) instead.
 
 ## Workflow
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/layout/page-header";
+import { METRIC_DEFS } from "@/data/glossary";
 import { MrrMovementChart } from "@/components/revenue/mrr-movement-chart";
 import { MrrTrendChart } from "@/components/revenue/mrr-trend-chart";
 import { StatCard } from "@/components/stat-card";
@@ -57,13 +58,13 @@ export default function RevenuePage() {
           label="MRR"
           value={usd.format(latest.mrr)}
           hint={`${latestMonth}, up from ${usd.format(prior.mrr)}`}
-          definition="Monthly Recurring Revenue — subscription revenue normalized to one month."
+          definition={METRIC_DEFS.mrr}
         />
         <StatCard
           label="Net revenue retention"
           value={`${nrr.toFixed(1)}%`}
           hint={`${latestMonth} · (start + expansion − contraction − churn) ÷ start`}
-          definition="NRR — recurring revenue kept from the existing customer base after expansion, contraction, and churn. Above 100% means the base grows even with zero new sales."
+          definition={METRIC_DEFS.nrr}
           className="border-gold/35"
           valueClassName="text-gold-gradient"
         />
@@ -71,13 +72,13 @@ export default function RevenuePage() {
           label={`Net new MRR (${latestMonth})`}
           value={`${netChange >= 0 ? "+" : ""}${usd.format(netChange)}`}
           hint="New + expansion − contraction − churn"
-          definition="The total change in Monthly Recurring Revenue this month, from all sources."
+          definition={METRIC_DEFS.netNewMrr}
         />
         <StatCard
           label="AI cost savings / mo"
           value={usd.format(totalCostSaved)}
           hint={`${totalHoursSaved} hrs × $${BLENDED_HOURLY_RATE_USD} blended rate`}
-          definition="Hours of manual work eliminated by AI initiatives, valued at a blended fully-loaded hourly rate."
+          definition={METRIC_DEFS.aiCostSavings}
         />
       </div>
 

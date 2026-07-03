@@ -4,6 +4,7 @@ import { AdoptionFunnelChart } from "@/components/adoption/adoption-funnel-chart
 import { InitiativeAdoptionTable } from "@/components/adoption/initiative-adoption-table";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/stat-card";
+import { METRIC_DEFS } from "@/data/glossary";
 import { adoptionFunnel, initiatives } from "@/data/productpulse";
 import { computeImpact } from "@/lib/impact";
 
@@ -31,13 +32,13 @@ export default function AdoptionPage() {
           label="Activation rate"
           value={pct(activated.count, signedUp.count)}
           hint="Signed Up → Activated"
-          definition="The share of signed-up accounts that reached their first core workflow."
+          definition={METRIC_DEFS.activationRate}
         />
         <StatCard
           label="Habit rate"
           value={pct(habitual.count, activated.count)}
           hint="Activated → Habitual"
-          definition="The share of activated accounts that made the product part of their regular routine."
+          definition={METRIC_DEFS.habitRate}
         />
         <StatCard
           label="Signup → habit"

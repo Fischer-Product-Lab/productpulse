@@ -17,9 +17,10 @@ Most growth dashboards answer *what happened*. ProductPulse also answers *what d
 | `/` | Executive Brief | North Star metric, headline KPIs, needs-attention list |
 | `/adoption` | Adoption & Activation | Signup→Activated→Habitual funnel; adoption by initiative |
 | `/engagement` | Engagement & Usage | DAU/WAU/MAU trend, stickiness, user segments |
+| `/retention` | Retention & Churn Risk *(V1.1)* | Cohort retention curves, churn-risk segmentation |
 | `/revenue` | Revenue & Business Impact | MRR trend, expansion/contraction, NRR, AI cost savings |
 | `/initiatives` | **Initiative Registry** | Every shipped initiative, before→after movement, computed status |
-| `/about` | About | Product context, architecture, security posture |
+| `/about` | About | Product context, architecture, security posture, metric glossary |
 
 ## The impact engine
 
@@ -30,6 +31,8 @@ The centerpiece is a pure function, [`src/lib/impact.ts`](src/lib/impact.ts), th
 - Anything between → **Monitor**
 
 No AI calls, no scoring drift: same inputs, same status, always. The UI only ever displays what this function returns — statuses are never hardcoded. A [vitest suite](src/lib/impact.test.ts) asserts the status of every seeded initiative plus dataset consistency (MRR movement math, segment coverage).
+
+V1.1 added a second engine in the same mold: [`src/lib/churn-risk.ts`](src/lib/churn-risk.ts) rates each user segment **Low**, **Elevated**, or **High** churn risk from stored usage signals (session frequency, recency, seat utilization), with its own [test suite](src/lib/churn-risk.test.ts) and cross-checks tying cohort sizes to the adoption funnel and segment MRR to the revenue history.
 
 ## Stack
 

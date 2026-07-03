@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ExternalLink } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/page-header";
+import { glossary } from "@/data/glossary";
 
 export const metadata: Metadata = { title: "About" };
 
@@ -177,11 +178,29 @@ export default function AboutPage() {
           </p>
         </Section>
 
+        <Section title="Glossary">
+          <p>
+            Every metric on these screens, in plain language. The same
+            definitions power the tooltips on the stat cards.
+          </p>
+          <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            {glossary.map((entry) => (
+              <div key={entry.term}>
+                <dt className="font-medium text-foreground">{entry.term}</dt>
+                <dd className="mt-0.5 text-sm leading-relaxed">
+                  {entry.definition}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
         <Section title="Coming next">
           <p>
-            V1.1 adds a retention view: cohort retention curves and churn-risk
-            segmentation, built on the same synthetic dataset and the same
-            deterministic rules.
+            V1.1 shipped the retention view — cohort retention curves and
+            churn-risk segmentation, built on the same synthetic dataset with a
+            second deterministic engine. Future cycles keep extending the same
+            pattern: explainable rules, stored numbers, computed conclusions.
           </p>
         </Section>
       </div>

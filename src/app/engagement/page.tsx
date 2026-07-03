@@ -4,6 +4,7 @@ import { EngagementTrendChart } from "@/components/engagement/engagement-trend-c
 import { SegmentBreakdownChart } from "@/components/engagement/segment-breakdown-chart";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/stat-card";
+import { METRIC_DEFS } from "@/data/glossary";
 import { engagementHistory, userSegments } from "@/data/productpulse";
 
 export const metadata: Metadata = { title: "Engagement" };
@@ -38,25 +39,25 @@ export default function EngagementPage() {
           label="DAU"
           value={latest.dau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
-          definition="Daily Active Users — unique users who took a meaningful action on a given day."
+          definition={METRIC_DEFS.dau}
         />
         <StatCard
           label="WAU"
           value={latest.wau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
-          definition="Weekly Active Users — unique users active in the last 7 days."
+          definition={METRIC_DEFS.wau}
         />
         <StatCard
           label="MAU"
           value={latest.mau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
-          definition="Monthly Active Users — unique users active in the last 30 days."
+          definition={METRIC_DEFS.mau}
         />
         <StatCard
           label="Stickiness (DAU ÷ MAU)"
           value={`${stickiness.toFixed(1)}%`}
           hint={`${stickinessDelta >= 0 ? "+" : ""}${stickinessDelta.toFixed(1)} pts since January`}
-          definition="The share of monthly active users who show up on a given day — a measure of how habitual the product is."
+          definition={METRIC_DEFS.stickiness}
           className="border-gold/35"
           valueClassName="text-gold-gradient"
         />

@@ -4,6 +4,7 @@ import { NeedsAttentionList } from "@/components/brief/needs-attention-list";
 import { NorthStarChart } from "@/components/brief/north-star-chart";
 import { PageHeader } from "@/components/layout/page-header";
 import { StatCard } from "@/components/stat-card";
+import { METRIC_DEFS } from "@/data/glossary";
 import {
   adoptionFunnel,
   engagementHistory,
@@ -62,7 +63,7 @@ export default function BriefPage() {
             label="Activation rate"
             value={`${activationRate.toFixed(1)}%`}
             hint="Signed Up → Activated · trailing 90 days"
-            definition="The share of signed-up accounts that reached their first core workflow."
+            definition={METRIC_DEFS.activationRate}
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -71,7 +72,7 @@ export default function BriefPage() {
             label="Stickiness"
             value={`${stickiness.toFixed(1)}%`}
             hint="DAU ÷ MAU, latest week"
-            definition="Daily Active Users ÷ Monthly Active Users — the share of monthly users who show up on a given day."
+            definition={METRIC_DEFS.stickiness}
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -80,7 +81,7 @@ export default function BriefPage() {
             label="Net revenue retention"
             value={`${nrr.toFixed(1)}%`}
             hint="June, existing-base retention"
-            definition="NRR — recurring revenue kept from the existing customer base after expansion, contraction, and churn. Above 100% means the base grows even with zero new sales."
+            definition={METRIC_DEFS.nrr}
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -89,7 +90,7 @@ export default function BriefPage() {
             label="AI hours saved / mo"
             value={`${aiHoursSaved} h`}
             hint="Across 4 shipped AI initiatives"
-            definition="Hours of manual work per month eliminated by shipped AI initiatives, as recorded in the initiative registry."
+            definition={METRIC_DEFS.aiCostSavings}
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>

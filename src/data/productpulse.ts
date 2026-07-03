@@ -55,6 +55,20 @@ export interface UserSegmentBreakdown {
   pctOfBase: number;
 }
 
+export interface CohortRetention {
+  cohort: string;          // "2026-01" — the month the users activated
+  activatedUsers: number;
+  retentionPct: number[];  // index = months since activation; [0] is always 100
+}
+
+export interface SegmentRiskSignal {
+  segment: UserSegment;
+  avgSessionsPerWeek: number;
+  medianDaysSinceLastActive: number;
+  seatUtilizationPct: number;  // used seats ÷ purchased seats in this segment's accounts
+  mrrUsd: number;              // MRR attributed to accounts dominated by this segment
+}
+
 /** Blended fully-loaded hourly rate used to convert hours saved into cost saved. */
 export const BLENDED_HOURLY_RATE_USD = 95;
 
@@ -246,4 +260,33 @@ export const userSegments: UserSegmentBreakdown[] = [
   { segment: "Casual", userCount: 2700, pctOfBase: 28.0 },
   { segment: "At Risk", userCount: 1250, pctOfBase: 13.0 },
   { segment: "Dormant", userCount: 1060, pctOfBase: 11.0 },
+];
+
+/**
+ * Monthly activation cohorts: of the users who activated in a given
+ * month, the share still active N months later. The three most recent
+ * cohorts sum to the funnel's trailing-90-day Activated count, and the
+ * improving early-retention curve tracks the initiatives shipped over
+ * the period (notably the Self-Serve Onboarding Redesign).
+ */
+export const cohortRetention: CohortRetention[] = [
+  { cohort: "2026-01", activatedUsers: 2210, retentionPct: [100, 58, 47, 41, 37, 34] },
+  { cohort: "2026-02", activatedUsers: 2340, retentionPct: [100, 61, 50, 44, 40] },
+  { cohort: "2026-03", activatedUsers: 2480, retentionPct: [100, 65, 55, 48] },
+  { cohort: "2026-04", activatedUsers: 2570, retentionPct: [100, 70, 61] },
+  { cohort: "2026-05", activatedUsers: 2650, retentionPct: [100, 75] },
+  { cohort: "2026-06", activatedUsers: 2720, retentionPct: [100] },
+];
+
+/**
+ * Usage signals per segment, current month. mrrUsd across all segments
+ * sums to the latest month-end MRR. Churn-risk tiers are computed from
+ * these numbers by src/lib/churn-risk.ts — never stored.
+ */
+export const segmentRiskSignals: SegmentRiskSignal[] = [
+  { segment: "Power", avgSessionsPerWeek: 9.5, medianDaysSinceLastActive: 1, seatUtilizationPct: 92, mrrUsd: 168000 },
+  { segment: "Core", avgSessionsPerWeek: 4.2, medianDaysSinceLastActive: 3, seatUtilizationPct: 74, mrrUsd: 214000 },
+  { segment: "Casual", avgSessionsPerWeek: 1.2, medianDaysSinceLastActive: 9, seatUtilizationPct: 41, mrrUsd: 82000 },
+  { segment: "At Risk", avgSessionsPerWeek: 0.4, medianDaysSinceLastActive: 19, seatUtilizationPct: 22, mrrUsd: 33000 },
+  { segment: "Dormant", avgSessionsPerWeek: 0.1, medianDaysSinceLastActive: 47, seatUtilizationPct: 9, mrrUsd: 12900 },
 ];
