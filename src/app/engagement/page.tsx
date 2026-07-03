@@ -38,21 +38,25 @@ export default function EngagementPage() {
           label="DAU"
           value={latest.dau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
+          definition="Daily Active Users — unique users who took a meaningful action on a given day."
         />
         <StatCard
           label="WAU"
           value={latest.wau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
+          definition="Weekly Active Users — unique users active in the last 7 days."
         />
         <StatCard
           label="MAU"
           value={latest.mau.toLocaleString("en-US")}
           hint={`Week of ${weekOf}`}
+          definition="Monthly Active Users — unique users active in the last 30 days."
         />
         <StatCard
           label="Stickiness (DAU ÷ MAU)"
           value={`${stickiness.toFixed(1)}%`}
           hint={`${stickinessDelta >= 0 ? "+" : ""}${stickinessDelta.toFixed(1)} pts since January`}
+          definition="The share of monthly active users who show up on a given day — a measure of how habitual the product is."
           className="border-gold/35"
           valueClassName="text-gold-gradient"
         />

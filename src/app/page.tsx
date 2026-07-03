@@ -62,6 +62,7 @@ export default function BriefPage() {
             label="Activation rate"
             value={`${activationRate.toFixed(1)}%`}
             hint="Signed Up → Activated · trailing 90 days"
+            definition="The share of signed-up accounts that reached their first core workflow."
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -70,6 +71,7 @@ export default function BriefPage() {
             label="Stickiness"
             value={`${stickiness.toFixed(1)}%`}
             hint="DAU ÷ MAU, latest week"
+            definition="Daily Active Users ÷ Monthly Active Users — the share of monthly users who show up on a given day."
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -78,6 +80,7 @@ export default function BriefPage() {
             label="Net revenue retention"
             value={`${nrr.toFixed(1)}%`}
             hint="June, existing-base retention"
+            definition="NRR — recurring revenue kept from the existing customer base after expansion, contraction, and churn. Above 100% means the base grows even with zero new sales."
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>
@@ -86,6 +89,7 @@ export default function BriefPage() {
             label="AI hours saved / mo"
             value={`${aiHoursSaved} h`}
             hint="Across 4 shipped AI initiatives"
+            definition="Hours of manual work per month eliminated by shipped AI initiatives, as recorded in the initiative registry."
             className="h-full transition-colors group-hover:border-gold/40"
           />
         </Link>

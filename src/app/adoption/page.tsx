@@ -31,16 +31,19 @@ export default function AdoptionPage() {
           label="Activation rate"
           value={pct(activated.count, signedUp.count)}
           hint="Signed Up → Activated"
+          definition="The share of signed-up accounts that reached their first core workflow."
         />
         <StatCard
           label="Habit rate"
           value={pct(habitual.count, activated.count)}
           hint="Activated → Habitual"
+          definition="The share of activated accounts that made the product part of their regular routine."
         />
         <StatCard
           label="Signup → habit"
           value={pct(habitual.count, signedUp.count)}
           hint="End-to-end funnel conversion"
+          definition="The share of all signups that became habitual users — the funnel end to end."
         />
       </div>
 
