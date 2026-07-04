@@ -43,5 +43,6 @@ next-env.d.ts
 # Claude Code local settings
 .claude/settings.local.json
 
-# Local agent handoff (not for the public repo)
+# Local agent handoffs (not for the public repo)
 docs/product_pulse_context.md
+docs/agentops_handoff_context.md
