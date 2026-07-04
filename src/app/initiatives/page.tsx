@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { InitiativeCard } from "@/components/initiatives/initiative-card";
 import { PageHeader } from "@/components/layout/page-header";
 import { initiatives, type ImpactStatus } from "@/data/productpulse";
+import { findConfoundingLaunches } from "@/lib/attribution";
 import { computeImpact } from "@/lib/impact";
 
 export const metadata: Metadata = { title: "Initiatives" };
@@ -15,7 +16,13 @@ const statusOrder: ImpactStatus[] = [
 
 export default function InitiativesPage() {
   const registry = initiatives
-    .map((initiative) => ({ initiative, impact: computeImpact(initiative) }))
+    .map((initiative) => ({
+      initiative,
+      impact: computeImpact(initiative),
+      confounders: findConfoundingLaunches(initiative, initiatives).map(
+        (c) => ({ name: c.initiative.name, deltaDays: c.deltaDays }),
+      ),
+    }))
     .sort((a, b) => b.impact.adoptionLiftPts - a.impact.adoptionLiftPts);
 
   const statusCounts = registry.reduce<Record<ImpactStatus, number>>(
@@ -32,7 +39,7 @@ export default function InitiativesPage() {
       <PageHeader
         eyebrow="Initiative Registry"
         title="What we shipped — and whether it worked"
-        description="Every shipped initiative, AI and standard alike, traced to the metric movement that followed. Impact status is computed deterministically from the numbers — click any initiative for the reasoning."
+        description="Every shipped initiative, AI and standard alike, traced to the metric movement that followed. Impact status is computed deterministically from the numbers — click any initiative for the reasoning and the adoption evidence behind it."
       />
 
       <div className="mb-6 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-border bg-card/40 px-5 py-3 text-sm">
@@ -67,11 +74,12 @@ export default function InitiativesPage() {
       </p>
 
       <div className="space-y-3">
-        {registry.map(({ initiative, impact }) => (
+        {registry.map(({ initiative, impact, confounders }) => (
           <InitiativeCard
             key={initiative.id}
             initiative={initiative}
             impact={impact}
+            confounders={confounders}
           />
         ))}
       </div>

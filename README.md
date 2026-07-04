@@ -34,6 +34,8 @@ No AI calls, no scoring drift: same inputs, same status, always. The UI only eve
 
 V1.1 added a second engine in the same mold: [`src/lib/churn-risk.ts`](src/lib/churn-risk.ts) rates each user segment **Low**, **Elevated**, or **High** churn risk from stored usage signals (session frequency, recency, seat utilization), with its own [test suite](src/lib/churn-risk.test.ts) and cross-checks tying cohort sizes to the adoption funnel and segment MRR to the revenue history.
 
+V1.2 added the evidence behind the registry: every initiative card charts its adoption series around the launch date, and a deterministic attribution helper ([`src/lib/attribution.ts`](src/lib/attribution.ts)) flags any other launch within 42 days as a shared-window caveat — because claiming clean attribution without one would be dishonest. AI initiatives also carry their AgentOps pre-launch review reference: governance before, accountability after, visible in a single card.
+
 ## Stack
 
 - Next.js (App Router) · TypeScript strict mode · Tailwind CSS · shadcn/ui · Recharts

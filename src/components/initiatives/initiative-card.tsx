@@ -1,13 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ExternalLink, TriangleAlert } from "lucide-react";
 
 import type { Initiative } from "@/data/productpulse";
 import type { ImpactResult } from "@/lib/impact";
 import { ImpactStatusBadge } from "@/components/impact-status-badge";
 import { InitiativeTypeBadge } from "@/components/initiative-type-badge";
+import { EvidenceChart } from "@/components/initiatives/evidence-chart";
 import { cn } from "@/lib/utils";
+
+export interface ConfounderNote {
+  name: string;
+  /** Days between launches; positive = launched after this initiative. */
+  deltaDays: number;
+}
+
+function confounderPhrase(c: ConfounderNote) {
+  const weeks = Math.round(Math.abs(c.deltaDays) / 7);
+  return `${c.name} launched ${weeks} wk${weeks === 1 ? "" : "s"} ${c.deltaDays > 0 ? "after" : "before"}`;
+}
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -64,9 +76,11 @@ function DetailMetric({ label, value }: { label: string; value: string }) {
 export function InitiativeCard({
   initiative,
   impact,
+  confounders,
 }: {
   initiative: Initiative;
   impact: ImpactResult;
+  confounders: ConfounderNote[];
 }) {
   const [open, setOpen] = React.useState(false);
   const detailsId = `${initiative.id}-details`;
@@ -169,6 +183,44 @@ export function InitiativeCard({
                 />
               )}
             </dl>
+          </div>
+
+          <div className="mt-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-gold">
+                Adoption evidence
+              </h3>
+              {initiative.agentOpsReviewId && (
+                <a
+                  href="https://agentops-fpl.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/5 px-2.5 py-0.5 text-xs text-gold-light transition-colors hover:border-gold/60"
+                >
+                  Pre-launch review · {initiative.agentOpsReviewId}
+                  <ExternalLink aria-hidden className="size-3" />
+                </a>
+              )}
+            </div>
+            <div className="mt-2">
+              <EvidenceChart
+                series={initiative.adoptionSeries}
+                launchDate={initiative.launchDate}
+              />
+            </div>
+            <p className="sr-only">
+              Adoption was {initiative.adoptionPctBefore}% eight weeks before
+              launch and is {initiative.adoptionPctAfter}% today.
+            </p>
+            {confounders.length > 0 && (
+              <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-warning">
+                <TriangleAlert aria-hidden className="mt-0.5 size-3.5 shrink-0" />
+                <span>
+                  Attribution caveat: {confounders.map(confounderPhrase).join("; ")}{" "}
+                  — adoption movement in this window may be shared.
+                </span>
+              </p>
+            )}
           </div>
         </div>
       )}

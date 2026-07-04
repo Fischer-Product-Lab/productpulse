@@ -30,6 +30,8 @@ export const METRIC_DEFS = {
     "Deterministic per-segment rating from usage signals: High (inactive 30+ days, or under 0.5 sessions/week while inactive 14+ days), Elevated (under 2 sessions/week, inactive 7+ days, or seat utilization under 30%), Low otherwise.",
   seatUtilization:
     "The share of purchased seats that are actively used across a segment's accounts.",
+  attributionCaveat:
+    "A flag raised when another initiative launched within six weeks of this one — adoption movement inside that shared window may belong to either launch, so neither can claim it cleanly.",
 } as const;
 
 export interface GlossaryEntry {
@@ -53,4 +55,5 @@ export const glossary: GlossaryEntry[] = [
   { term: "Cohort retention", definition: METRIC_DEFS.cohortRetention },
   { term: "Churn risk", definition: METRIC_DEFS.churnRisk },
   { term: "Seat utilization", definition: METRIC_DEFS.seatUtilization },
+  { term: "Attribution caveat", definition: METRIC_DEFS.attributionCaveat },
 ];

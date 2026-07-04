@@ -12,6 +12,11 @@ export type InitiativeType = "AI" | "Standard";
 export type ImpactStatus = "Strong Impact" | "Monitor" | "Underperforming";
 export type UserSegment = "Power" | "Core" | "Casual" | "At Risk" | "Dormant";
 
+export interface AdoptionSample {
+  weeksSinceLaunch: number;  // negative = before launch
+  adoptionPct: number;
+}
+
 export interface Initiative {
   id: string;
   name: string;
@@ -26,6 +31,15 @@ export interface Initiative {
   costSavedPerMonthUsd?: number;    // derived or direct
   revenueImpactUsd?: number;        // expansion/retention $ attributable, can be 0
   narrative: string;           // 1 sentence: why it moved (or didn't move) the needle
+  /**
+   * Biweekly adoption samples from ~8 weeks pre-launch to today. The
+   * first sample equals adoptionPctBefore and the last equals
+   * adoptionPctAfter (test-enforced), so the evidence chart and the
+   * headline numbers can never disagree.
+   */
+  adoptionSeries: AdoptionSample[];
+  /** AI initiatives: the AgentOps pre-launch governance review reference. */
+  agentOpsReviewId?: string;
 }
 
 export interface EngagementSnapshot {
@@ -72,6 +86,10 @@ export interface SegmentRiskSignal {
 /** Blended fully-loaded hourly rate used to convert hours saved into cost saved. */
 export const BLENDED_HOURLY_RATE_USD = 95;
 
+/** Compact tuple form for adoption series: [weeksSinceLaunch, adoptionPct]. */
+const series = (pts: [number, number][]): AdoptionSample[] =>
+  pts.map(([weeksSinceLaunch, adoptionPct]) => ({ weeksSinceLaunch, adoptionPct }));
+
 export const initiatives: Initiative[] = [
   {
     id: "ini-001",
@@ -89,6 +107,12 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 0,
     narrative:
       "Triage time per ticket dropped from minutes to seconds, so team leads kept it on after the pilot.",
+    adoptionSeries: series([
+      [-8, 12], [-6, 11], [-4, 12], [-2, 12],
+      [0, 12], [2, 18], [4, 26], [6, 35], [8, 43], [10, 50], [12, 55],
+      [14, 58], [16, 61], [18, 62], [20, 63], [22, 64], [24, 64],
+    ]),
+    agentOpsReviewId: "AGT-0134",
   },
   {
     id: "ini-002",
@@ -104,6 +128,12 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 42000,
     narrative:
       "New accounts reach their first workflow without a CS call, lifting activation and early expansion.",
+    adoptionSeries: series([
+      [-8, 18], [-6, 17], [-4, 18], [-2, 18],
+      [0, 18], [2, 22], [4, 27], [6, 32], [8, 36], [10, 40], [12, 43],
+      [14, 46], [16, 48], [18, 50], [20, 51], [22, 52], [24, 53],
+      [26, 54], [28, 54], [30, 55], [32, 55], [34, 55],
+    ]),
   },
   {
     id: "ini-003",
@@ -121,6 +151,12 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 0,
     narrative:
       "PMs stopped writing notes from scratch; drafts ship with light edits, so usage spread team to team.",
+    adoptionSeries: series([
+      [-8, 8], [-6, 8], [-4, 7], [-2, 8],
+      [0, 8], [2, 14], [4, 22], [6, 30], [8, 37], [10, 42], [12, 46],
+      [14, 48], [16, 50], [18, 51], [20, 51],
+    ]),
+    agentOpsReviewId: "AGT-0151",
   },
   {
     id: "ini-004",
@@ -138,6 +174,12 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 0,
     narrative:
       "Adoption is solid but concentrated in one support pod; the other pods still paste threads manually.",
+    adoptionSeries: series([
+      [-8, 15], [-6, 14], [-4, 15], [-2, 15],
+      [0, 15], [2, 19], [4, 24], [6, 28], [8, 31], [10, 34], [12, 36],
+      [14, 37], [16, 38],
+    ]),
+    agentOpsReviewId: "AGT-0162",
   },
   {
     id: "ini-005",
@@ -153,6 +195,12 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 58000,
     narrative:
       "Expansion revenue is strong, but fewer accounts opted into the new meters than the model assumed.",
+    adoptionSeries: series([
+      [-8, 30], [-6, 29], [-4, 30], [-2, 30],
+      [0, 30], [2, 32], [4, 34], [6, 36], [8, 38], [10, 39], [12, 41],
+      [14, 42], [16, 43], [18, 44], [20, 44], [22, 45], [24, 45],
+      [26, 46], [28, 46], [30, 46],
+    ]),
   },
   {
     id: "ini-006",
@@ -168,6 +216,11 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 3200,
     narrative:
       "Opt-out rates capped reach within two weeks; the users it did reach rarely returned twice.",
+    adoptionSeries: series([
+      [-8, 22], [-6, 22], [-4, 21], [-2, 22],
+      [0, 22], [2, 27], [4, 29], [6, 28], [8, 27], [10, 26], [12, 25],
+      [14, 26], [16, 26], [18, 25], [20, 26], [22, 26],
+    ]),
   },
   {
     id: "ini-007",
@@ -183,6 +236,11 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 0,
     narrative:
       "Novelty faded within two weeks and badges never connected to anything users valued — sunset candidate.",
+    adoptionSeries: series([
+      [-8, 5], [-6, 5], [-4, 4], [-2, 5],
+      [0, 5], [2, 8], [4, 9], [6, 10], [8, 9], [10, 9], [12, 8],
+      [14, 9], [16, 9], [18, 9],
+    ]),
   },
   {
     id: "ini-008",
@@ -200,6 +258,11 @@ export const initiatives: Initiative[] = [
     revenueImpactUsd: 0,
     narrative:
       "Leadership stopped requesting hand-built status decks once the Monday brief proved reliable.",
+    adoptionSeries: series([
+      [-8, 10], [-6, 10], [-4, 9], [-2, 10],
+      [0, 10], [2, 17], [4, 25], [6, 31], [8, 36], [10, 39], [12, 41],
+    ]),
+    agentOpsReviewId: "AGT-0177",
   },
 ];
 
