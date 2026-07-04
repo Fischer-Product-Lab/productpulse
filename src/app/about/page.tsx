@@ -195,14 +195,6 @@ export default function AboutPage() {
           </dl>
         </Section>
 
-        <Section title="Coming next">
-          <p>
-            V1.1 shipped the retention view — cohort retention curves and
-            churn-risk segmentation, built on the same synthetic dataset with a
-            second deterministic engine. Future cycles keep extending the same
-            pattern: explainable rules, stored numbers, computed conclusions.
-          </p>
-        </Section>
       </div>
     </>
   );
