@@ -4,7 +4,7 @@
 
 ProductPulse is a Fischer Product Lab portfolio product: an executive product-analytics dashboard tracking adoption, engagement/usage, revenue, and business outcomes for a fictional B2B SaaS product — including a dedicated registry that traces AI and standard initiatives to the metric movement they actually caused. **Read** `docs/PRODUCTPULSE_BUILD_KIT.md` **before building anything** — it has the full spec, data model, and synthetic dataset. Don't build ahead of it from memory.
 
-If `docs/AGENT_CONTEXT.md` exists locally (it's gitignored — agent handoff, not public), read it too: it records build history, decisions, and known gotchas, and should be kept up to date as work continues.
+If `docs/product_pulse_context.md` exists locally (it's gitignored — agent handoff, not public), read it too: it records build history, decisions, and known gotchas, and should be kept up to date as work continues.
 
 ## Fischer Product Lab suite (sibling products — for framing/consistency only; do not modify these repos)
 
