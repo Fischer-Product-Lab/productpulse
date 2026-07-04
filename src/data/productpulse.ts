@@ -38,7 +38,12 @@ export interface Initiative {
    * headline numbers can never disagree.
    */
   adoptionSeries: AdoptionSample[];
-  /** AI initiatives: the AgentOps pre-launch governance review reference. */
+  /**
+   * The AgentOps registry id of the agent behind this initiative —
+   * these are real ids in the AgentOps demo (agentops-fpl.vercel.app),
+   * and the UI deep-links to /registry/{id}. Absent when no counterpart
+   * agent exists in the AgentOps registry.
+   */
   agentOpsReviewId?: string;
 }
 
@@ -112,7 +117,7 @@ export const initiatives: Initiative[] = [
       [0, 12], [2, 18], [4, 26], [6, 35], [8, 43], [10, 50], [12, 55],
       [14, 58], [16, 61], [18, 62], [20, 63], [22, 64], [24, 64],
     ]),
-    agentOpsReviewId: "AGT-0134",
+    agentOpsReviewId: "agt-001",
   },
   {
     id: "ini-002",
@@ -156,7 +161,7 @@ export const initiatives: Initiative[] = [
       [0, 8], [2, 14], [4, 22], [6, 30], [8, 37], [10, 42], [12, 46],
       [14, 48], [16, 50], [18, 51], [20, 51],
     ]),
-    agentOpsReviewId: "AGT-0151",
+    agentOpsReviewId: "agt-002",
   },
   {
     id: "ini-004",
@@ -179,7 +184,7 @@ export const initiatives: Initiative[] = [
       [0, 15], [2, 19], [4, 24], [6, 28], [8, 31], [10, 34], [12, 36],
       [14, 37], [16, 38],
     ]),
-    agentOpsReviewId: "AGT-0162",
+    agentOpsReviewId: "agt-003",
   },
   {
     id: "ini-005",
@@ -262,7 +267,8 @@ export const initiatives: Initiative[] = [
       [-8, 10], [-6, 10], [-4, 9], [-2, 10],
       [0, 10], [2, 17], [4, 25], [6, 31], [8, 36], [10, 39], [12, 41],
     ]),
-    agentOpsReviewId: "AGT-0177",
+    // No agentOpsReviewId: the exec brief generator has no counterpart
+    // agent in the AgentOps registry.
   },
 ];
 

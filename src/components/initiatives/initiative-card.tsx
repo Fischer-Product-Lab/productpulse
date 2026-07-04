@@ -192,7 +192,7 @@ export function InitiativeCard({
               </h3>
               {initiative.agentOpsReviewId && (
                 <a
-                  href="https://agentops-fpl.vercel.app/"
+                  href={`https://agentops-fpl.vercel.app/registry/${initiative.agentOpsReviewId}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/5 px-2.5 py-0.5 text-xs text-gold-light transition-colors hover:border-gold/60"

@@ -70,13 +70,19 @@ describe("adoption evidence series consistency", () => {
     });
   }
 
-  it("every AI initiative carries an AgentOps review id; standard ones don't", () => {
+  it("maps initiatives to their real AgentOps registry counterparts", () => {
+    // These ids exist in the AgentOps demo registry
+    // (agentops-fpl.vercel.app/registry/{id}) — the chips deep-link to
+    // them, so a wrong id here is a broken link in production.
+    const expectedReviewIds: Record<string, string | undefined> = {
+      "ini-001": "agt-001", // Jira Triage Bot (Launch)
+      "ini-003": "agt-002", // Release Notes Drafter (Launch)
+      "ini-004": "agt-003", // Support Ticket Summarizer (Conditional)
+      // ini-008 has no counterpart agent; Standard initiatives are
+      // outside AgentOps governance entirely.
+    };
     for (const initiative of initiatives) {
-      if (initiative.type === "AI") {
-        expect(initiative.agentOpsReviewId).toMatch(/^AGT-\d{4}$/);
-      } else {
-        expect(initiative.agentOpsReviewId).toBeUndefined();
-      }
+      expect(initiative.agentOpsReviewId).toBe(expectedReviewIds[initiative.id]);
     }
   });
 });
