@@ -25,6 +25,26 @@ You can expect an acknowledgment within a few days. Because this is a demo with 
 
 Only the latest deployment from `main` (productpulse-fpl.vercel.app) is supported.
 
+## Response headers
+
+Every route is served with the following headers (configured in [`next.config.ts`](next.config.ts)):
+
+| Header | Value |
+|---|---|
+| `Content-Security-Policy` | `default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'` |
+| `X-Frame-Options` | `DENY` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
+
+`'unsafe-inline'` is required in `script-src` and `style-src`: Next.js injects inline bootstrap/hydration scripts, and Recharts (along with Next/Tailwind) emits inline styles. A nonce-based CSP would require middleware, which this static, backend-less demo deliberately avoids. `'unsafe-eval'` and wildcard sources are never used; the CSP is otherwise locked to `'self'`, and framing is denied outright.
+
+> **Note:** `npm run dev` logs a console error that React's dev-mode debugging tooling needs `'unsafe-eval'`. This is development-only — the production bundle contains no `eval()` calls and the warning is absent from it, so `'unsafe-eval'` is intentionally **not** granted. Do not add it to quiet the dev warning.
+
+## Accepted risks
+
+- **postcss `GHSA-qx2v-qp2m-jg93` (moderate, XSS via unescaped `</style>` in stringify output).** `npm audit` reports this transitively inside Next.js's own dependency tree. It is **accepted**: postcss here is build-time tooling that never processes untrusted input, the site ships as read-only static assets with no runtime CSS generation, and the only available fix is a breaking Next.js downgrade. It will clear when Next bumps its bundled postcss.
+
 ## Threat model
 
 A STRIDE analysis of the application lives at [docs/threat-model.md](docs/threat-model.md).
