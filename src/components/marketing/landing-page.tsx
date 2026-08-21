@@ -56,7 +56,7 @@ export function LandingPage() {
             <h1 className="marketing-type-display marketing-rise marketing-rise-delay-1 mt-6 max-w-5xl text-ivory">
               Did the launched
               <br />
-              thing actually work?
+              product actually work?
             </h1>
             <p className="marketing-type-body marketing-rise marketing-rise-delay-2 mx-auto mt-6 max-w-xl text-ivory/70">
               Adoption, engagement, retention, revenue, and every shipped
