@@ -14,7 +14,8 @@ Most growth dashboards answer *what happened*. ProductPulse also answers *what d
 
 | Route | Screen | Job |
 |---|---|---|
-| `/` | Executive Brief | North Star metric, headline KPIs, needs-attention list |
+| `/` | Portfolio landing | Cinematic marketing surface — grain, one light, a real product window |
+| `/demo` | Executive Brief | North Star metric, headline KPIs, needs-attention list |
 | `/adoption` | Adoption & Activation | Signup→Activated→Habitual funnel; adoption by initiative |
 | `/engagement` | Engagement & Usage | DAU/WAU/MAU trend, stickiness, user segments |
 | `/retention` | Retention & Churn Risk *(V1.1)* | Cohort retention curves, churn-risk segmentation |
@@ -41,7 +42,7 @@ V1.2 added the evidence behind the registry: every initiative card charts its ad
 - Next.js (App Router) · TypeScript strict mode · Tailwind CSS · shadcn/ui · Recharts
 - No backend, no database — a fully typed synthetic dataset in [`src/data/productpulse.ts`](src/data/productpulse.ts)
 - Every route statically prerendered; deployed on Vercel from GitHub `main`
-- Fonts: Fraunces (headings) and Hanken Grotesk (body) via `next/font`
+- Fonts: Geist + Geist Mono on the landing; Fraunces (headings) and Hanken Grotesk (body) inside the demo chrome
 
 ## Getting started
 

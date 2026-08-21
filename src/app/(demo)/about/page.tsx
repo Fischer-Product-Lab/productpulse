@@ -82,7 +82,9 @@ export default function AboutPage() {
             <ul className="list-disc space-y-1.5 pl-5">
               <li>
                 Next.js App Router with TypeScript strict mode; every route is
-                statically prerendered.
+                statically prerendered. <code className="text-foreground">/</code>{" "}
+                is the cinematic landing; the executive brief is{" "}
+                <code className="text-foreground">/demo</code>.
               </li>
               <li>
                 No backend, no database, no APIs — a fully typed synthetic

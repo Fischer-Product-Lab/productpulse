@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import type { EngagementSnapshot } from "@/data/productpulse";
+import { cn } from "@/lib/utils";
 
 function formatTick(iso: string) {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
@@ -21,11 +22,13 @@ function formatTick(iso: string) {
 
 export function NorthStarChart({
   history,
+  className,
 }: {
   history: EngagementSnapshot[];
+  className?: string;
 }) {
   return (
-    <div className="h-64 w-full" aria-hidden>
+    <div className={cn("h-64 w-full", className)} aria-hidden>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={history}

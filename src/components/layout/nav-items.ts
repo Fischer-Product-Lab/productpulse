@@ -16,7 +16,7 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { title: "Brief", href: "/", icon: LayoutDashboard },
+  { title: "Brief", href: "/demo", icon: LayoutDashboard },
   { title: "Adoption", href: "/adoption", icon: UserPlus },
   { title: "Engagement", href: "/engagement", icon: Activity },
   { title: "Retention", href: "/retention", icon: Repeat },

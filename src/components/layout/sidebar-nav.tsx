@@ -13,8 +13,8 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     <nav aria-label="Primary" className="flex flex-col gap-1">
       {navItems.map((item) => {
         const active =
-          item.href === "/"
-            ? pathname === "/"
+          item.href === "/demo"
+            ? pathname === "/demo"
             : pathname.startsWith(item.href);
         return (
           <Link

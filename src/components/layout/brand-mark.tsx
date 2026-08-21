@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function BrandMark() {
   return (
-    <Link href="/" className="group flex items-center gap-3">
+    <Link href="/demo" className="group flex items-center gap-3">
       <span
         aria-hidden
         className="flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-gold to-gold-light font-heading text-lg font-semibold text-primary-foreground"
