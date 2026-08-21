@@ -25,7 +25,7 @@ AgentOps asks *"is this AI initiative safe to launch?"* before it ships. Product
 
 | Route | Screen | Job |
 |---|---|---|
-| `/` | **Executive Brief** | North Star metric, headline KPIs, needs-attention list. |
+| `/demo` | **Executive Brief** | North Star metric, headline KPIs, needs-attention list. (`/` is now the cinematic portfolio landing.) |
 | `/adoption` | **Adoption & Activation** | Signup→Activated→Habitual funnel; feature/initiative adoption rates. |
 | `/engagement` | **Engagement & Usage** | DAU/WAU/MAU trend, stickiness ratio, user-segment breakdown. |
 | `/revenue` | **Revenue & Business Impact** | MRR trend, expansion/contraction, NRR, AI cost-savings rollup. |

@@ -48,7 +48,7 @@ Next.js App Router, TypeScript strict mode, Tailwind CSS, shadcn/ui, Recharts, d
 
 ## Scope boundary
 
-V1 shipped six routes — executive brief, adoption, engagement, revenue, initiatives (the differentiator), about — and V1.1 added `/retention` (cohort curves + churn-risk segmentation, explicitly requested July 2026) plus a glossary on the About page. Resist adding further screens unless explicitly asked; extend the existing pattern (typed data in `src/data/`, deterministic engines in `src/lib/`, tests) instead.
+V1 shipped six product screens — executive brief, adoption, engagement, revenue, initiatives (the differentiator), about — and V1.1 added `/retention` (cohort curves + churn-risk segmentation, explicitly requested July 2026) plus a glossary on the About page. `/` is the cinematic portfolio landing; the executive brief lives at `/demo`. Resist adding further screens unless explicitly asked; extend the existing pattern (typed data in `src/data/`, deterministic engines in `src/lib/`, tests) instead.
 
 ## Workflow
 
