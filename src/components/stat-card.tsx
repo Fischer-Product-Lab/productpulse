@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -18,6 +20,8 @@ export function StatCard({
   definition,
   className,
   valueClassName,
+  href,
+  linkLabel,
 }: {
   label: string;
   value: string;
@@ -26,11 +30,13 @@ export function StatCard({
   definition?: string;
   className?: string;
   valueClassName?: string;
+  href?: string;
+  linkLabel?: string;
 }) {
   return (
     <div
       className={cn(
-        "rounded-xl border border-border bg-card px-5 py-4",
+        "flex h-full flex-col rounded-xl border border-border bg-card px-5 py-4",
         className,
       )}
     >
@@ -66,7 +72,20 @@ export function StatCard({
       >
         {value}
       </p>
-      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
+      {hint && (
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {hint}
+        </p>
+      )}
+      {href && (
+        <Link
+          href={href}
+          className="mt-auto flex min-h-10 items-center justify-between gap-2 pt-3 text-xs font-medium text-gold-light hover:underline"
+        >
+          {linkLabel ?? "Explore metric"}
+          <ArrowUpRight aria-hidden className="size-3.5" />
+        </Link>
+      )}
     </div>
   );
 }

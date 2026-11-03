@@ -2,11 +2,14 @@
 
 import * as React from "react";
 import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import { BrandMark } from "@/components/layout/brand-mark";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { SyntheticDataBadge } from "@/components/layout/synthetic-data-badge";
 import { Button } from "@/components/ui/button";
+import { navItems } from "@/components/layout/nav-items";
+import { engagementHistory } from "@/data/productpulse";
 import {
   Sheet,
   SheetContent,
@@ -17,16 +20,26 @@ import {
 
 export function TopBar() {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+  const currentPage =
+    navItems.find((item) => item.href === pathname)?.title ?? "Overview";
+  const latestDate = new Date(
+    `${engagementHistory.at(-1)!.date}T00:00:00Z`,
+  ).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur-sm md:px-6 lg:h-16">
+    <header className="sticky top-0 z-40 flex min-h-16 flex-wrap items-center gap-x-3 gap-y-2 border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md md:px-8 lg:h-16 lg:py-0">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
           render={
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="size-11 lg:hidden"
               aria-label="Open navigation"
             />
           }
@@ -48,9 +61,14 @@ export function TopBar() {
         <BrandMark />
       </div>
 
-      <div className="ml-auto flex items-center gap-3">
-        <span className="hidden text-xs text-muted-foreground sm:inline">
-          Executive product analytics
+      <p className="hidden items-center gap-2.5 text-xs text-muted-foreground lg:flex">
+        Workspace <span aria-hidden>/</span>{" "}
+        <span className="text-foreground">{currentPage}</span>
+      </p>
+
+      <div className="flex w-full items-center justify-between gap-3 border-t border-border pt-2 sm:ml-auto sm:w-auto sm:border-0 sm:pt-0">
+        <span className="text-xs text-muted-foreground">
+          {latestDate} snapshot
         </span>
         <SyntheticDataBadge />
       </div>

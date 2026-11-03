@@ -31,6 +31,7 @@ export function NorthStarChart({
     <div className={cn("h-64 w-full", className)} aria-hidden>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
+          accessibilityLayer={false}
           data={history}
           margin={{ top: 8, right: 12, bottom: 0, left: 0 }}
         >

@@ -10,6 +10,17 @@ import { InitiativeTypeBadge } from "@/components/initiative-type-badge";
 import { EvidenceChart } from "@/components/initiatives/evidence-chart";
 import { cn } from "@/lib/utils";
 
+function subscribeToHash(onChange: () => void) {
+  window.addEventListener("hashchange", onChange);
+  window.addEventListener("popstate", onChange);
+  return () => {
+    window.removeEventListener("hashchange", onChange);
+    window.removeEventListener("popstate", onChange);
+  };
+}
+const getHash = () => window.location.hash.slice(1);
+const getServerHash = () => "";
+
 export interface ConfounderNote {
   name: string;
   /** Days between launches; positive = launched after this initiative. */
@@ -82,14 +93,31 @@ export function InitiativeCard({
   impact: ImpactResult;
   confounders: ConfounderNote[];
 }) {
-  const [open, setOpen] = React.useState(false);
+  const hash = React.useSyncExternalStore(
+    subscribeToHash,
+    getHash,
+    getServerHash,
+  );
+  const [selection, setSelection] = React.useState<{
+    hash: string;
+    open: boolean;
+  } | null>(null);
+  const open =
+    selection?.hash === hash ? selection.open : hash === initiative.id;
   const detailsId = `${initiative.id}-details`;
 
   return (
-    <article className="rounded-xl border border-border bg-card transition-colors hover:border-foreground/20">
+    <article
+      id={initiative.id}
+      className={cn(
+        "scroll-mt-36 rounded-xl border bg-card transition-colors hover:border-foreground/20 lg:scroll-mt-24",
+        open ? "border-gold/40" : "border-border",
+      )}
+    >
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setSelection({ hash, open: !open })}
+        aria-label={`${open ? "Hide" : "View"} evidence for ${initiative.name}`}
         aria-expanded={open}
         aria-controls={detailsId}
         className="w-full rounded-xl px-5 py-4 text-left focus-visible:outline-2 focus-visible:outline-ring"
@@ -103,7 +131,8 @@ export function InitiativeCard({
               <InitiativeTypeBadge type={initiative.type} />
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              {initiative.owner} · launched {formatLaunchDate(initiative.launchDate)}
+              {initiative.owner} · launched{" "}
+              {formatLaunchDate(initiative.launchDate)}
             </p>
           </div>
 
@@ -127,103 +156,116 @@ export function InitiativeCard({
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           {initiative.narrative}
         </p>
+        <span className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-gold-light">
+          {open ? "Hide evidence" : "View evidence & reasoning"}
+        </span>
       </button>
 
-      {open && (
-        <div id={detailsId} className="border-t border-border px-5 py-4">
-          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto]">
-            <div>
-              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-gold">
-                Why this status
-              </h3>
-              <ul className="mt-2 space-y-1.5">
-                {impact.reasons.map((reason) => (
-                  <li
-                    key={reason}
-                    className="flex items-start gap-2.5 text-sm text-foreground"
+      <div
+        id={detailsId}
+        hidden={!open}
+        className="border-t border-border px-5 py-4"
+      >
+        {open && (
+          <>
+            <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-gold">
+                  Why this status
+                </h3>
+                <ul className="mt-2 space-y-1.5">
+                  {impact.reasons.map((reason) => (
+                    <li
+                      key={reason}
+                      className="flex items-start gap-2.5 text-sm text-foreground"
+                    >
+                      <span
+                        aria-hidden
+                        className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gold/60"
+                      />
+                      {reason}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {initiative.description}
+                </p>
+              </div>
+
+              <dl className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3 md:grid-cols-2">
+                <DetailMetric
+                  label="Adoption lift"
+                  value={signed(impact.adoptionLiftPts, " pts")}
+                />
+                <DetailMetric
+                  label="Engagement lift"
+                  value={signed(initiative.engagementLiftPct, "%")}
+                />
+                {initiative.hoursSavedPerMonth !== undefined && (
+                  <DetailMetric
+                    label="Hours saved / mo"
+                    value={String(initiative.hoursSavedPerMonth)}
+                  />
+                )}
+                {initiative.costSavedPerMonthUsd !== undefined && (
+                  <DetailMetric
+                    label="Cost saved / mo"
+                    value={usd.format(initiative.costSavedPerMonthUsd)}
+                  />
+                )}
+                {initiative.revenueImpactUsd !== undefined && (
+                  <DetailMetric
+                    label="Revenue impact"
+                    value={usd.format(initiative.revenueImpactUsd)}
+                  />
+                )}
+              </dl>
+            </div>
+
+            <div className="mt-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-gold">
+                  Adoption evidence
+                </h3>
+                {initiative.agentOpsReviewId && (
+                  <a
+                    href={`https://agentops-fpl.vercel.app/registry/${initiative.agentOpsReviewId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/5 px-2.5 py-0.5 text-xs text-gold-light transition-colors hover:border-gold/60"
                   >
-                    <span
-                      aria-hidden
-                      className="mt-1.5 size-1.5 shrink-0 rounded-full bg-gold/60"
-                    />
-                    {reason}
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 text-sm text-muted-foreground">
-                {initiative.description}
+                    Pre-launch review · {initiative.agentOpsReviewId}
+                    <ExternalLink aria-hidden className="size-3" />
+                  </a>
+                )}
+              </div>
+              <div className="mt-2">
+                <EvidenceChart
+                  series={initiative.adoptionSeries}
+                  launchDate={initiative.launchDate}
+                />
+              </div>
+              <p className="sr-only">
+                Adoption was {initiative.adoptionPctBefore}% eight weeks before
+                launch and is {initiative.adoptionPctAfter}% today.
               </p>
-            </div>
-
-            <dl className="grid shrink-0 grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-3 md:grid-cols-2">
-              <DetailMetric
-                label="Adoption lift"
-                value={signed(impact.adoptionLiftPts, " pts")}
-              />
-              <DetailMetric
-                label="Engagement lift"
-                value={signed(initiative.engagementLiftPct, "%")}
-              />
-              {initiative.hoursSavedPerMonth !== undefined && (
-                <DetailMetric
-                  label="Hours saved / mo"
-                  value={String(initiative.hoursSavedPerMonth)}
-                />
-              )}
-              {initiative.costSavedPerMonthUsd !== undefined && (
-                <DetailMetric
-                  label="Cost saved / mo"
-                  value={usd.format(initiative.costSavedPerMonthUsd)}
-                />
-              )}
-              {initiative.revenueImpactUsd !== undefined && (
-                <DetailMetric
-                  label="Revenue impact"
-                  value={usd.format(initiative.revenueImpactUsd)}
-                />
-              )}
-            </dl>
-          </div>
-
-          <div className="mt-5">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-xs font-medium uppercase tracking-[0.14em] text-gold">
-                Adoption evidence
-              </h3>
-              {initiative.agentOpsReviewId && (
-                <a
-                  href={`https://agentops-fpl.vercel.app/registry/${initiative.agentOpsReviewId}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full border border-gold/30 bg-gold/5 px-2.5 py-0.5 text-xs text-gold-light transition-colors hover:border-gold/60"
-                >
-                  Pre-launch review · {initiative.agentOpsReviewId}
-                  <ExternalLink aria-hidden className="size-3" />
-                </a>
+              {confounders.length > 0 && (
+                <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-warning">
+                  <TriangleAlert
+                    aria-hidden
+                    className="mt-0.5 size-3.5 shrink-0"
+                  />
+                  <span>
+                    Attribution caveat:{" "}
+                    {confounders.map(confounderPhrase).join("; ")} — adoption
+                    movement in this window may be shared.
+                  </span>
+                </p>
               )}
             </div>
-            <div className="mt-2">
-              <EvidenceChart
-                series={initiative.adoptionSeries}
-                launchDate={initiative.launchDate}
-              />
-            </div>
-            <p className="sr-only">
-              Adoption was {initiative.adoptionPctBefore}% eight weeks before
-              launch and is {initiative.adoptionPctAfter}% today.
-            </p>
-            {confounders.length > 0 && (
-              <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-warning">
-                <TriangleAlert aria-hidden className="mt-0.5 size-3.5 shrink-0" />
-                <span>
-                  Attribution caveat: {confounders.map(confounderPhrase).join("; ")}{" "}
-                  — adoption movement in this window may be shared.
-                </span>
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </article>
   );
 }

@@ -23,10 +23,10 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              "relative flex min-h-11 items-center gap-3 rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
               active
-                ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
+                ? "border-gold/20 bg-sidebar-accent text-sidebar-accent-foreground"
+                : "border-transparent text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
             )}
           >
             <item.icon
@@ -34,6 +34,12 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
               aria-hidden
             />
             {item.title}
+            {active && (
+              <span
+                aria-hidden
+                className="ml-auto size-1.5 rounded-full bg-gold"
+              />
+            )}
           </Link>
         );
       })}
